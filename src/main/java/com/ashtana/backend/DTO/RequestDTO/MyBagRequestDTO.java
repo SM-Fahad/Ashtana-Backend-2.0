@@ -3,6 +3,6 @@ package com.ashtana.backend.DTO.RequestDTO;
 import lombok.Data;
 
 @Data
-public class CartRequestDTO {
+public class MyBagRequestDTO {
     private Long userId;
 }

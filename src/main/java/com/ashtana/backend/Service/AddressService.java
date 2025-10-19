@@ -1,9 +1,9 @@
 package com.ashtana.backend.Service;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.AddressRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.AddressResponseDTO;
-import com.My.E_CommerceApp.Entity.Address;
-import com.My.E_CommerceApp.Repository.AddressRepo;
+import com.ashtana.backend.DTO.RequestDTO.AddressRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.AddressResponseDTO;
+import com.ashtana.backend.Entity.Address;
+import com.ashtana.backend.Repository.AddressRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

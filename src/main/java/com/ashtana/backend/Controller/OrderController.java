@@ -1,9 +1,10 @@
 package com.ashtana.backend.Controller;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.OrderRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.OrderResponseDTO;
-import com.My.E_CommerceApp.Enum.OrderStatus;
-import com.My.E_CommerceApp.Service.OrderService;
+
+import com.ashtana.backend.DTO.RequestDTO.OrderRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.OrderResponseDTO;
+import com.ashtana.backend.Enums.OrderStatus;
+import com.ashtana.backend.Service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,5 +49,12 @@ public class OrderController {
     public String deleteOrder(@PathVariable Long id) {
         orderService.delete(id);
         return "Order deleted successfully!";
+    }
+
+    // ✅ Checkout endpoint
+    @PostMapping("/checkout")
+    public OrderResponseDTO checkout(@RequestParam Long userId,
+                                     @RequestParam Long addressId) {
+        return orderService.checkout(userId, addressId);
     }
 }

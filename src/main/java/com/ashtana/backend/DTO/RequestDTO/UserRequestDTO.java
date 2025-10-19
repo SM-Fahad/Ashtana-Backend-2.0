@@ -1,6 +1,7 @@
 package com.ashtana.backend.DTO.RequestDTO;
 
-import com.My.E_CommerceApp.Enum.AccountStatus;
+
+import com.ashtana.backend.Enums.AccountStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -33,13 +34,13 @@ public class UserRequestDTO {
     // Optional during registration (user may leave blank)
     private List<AddressRequestDTO> addresses;
 
-    private Boolean isActive;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    private String createdBy;
+//    private Boolean isActive;
+//
+//    private LocalDateTime createdAt;
+//
+//    private LocalDateTime updatedAt;
+//
+//    private String createdBy;
 
 
 }

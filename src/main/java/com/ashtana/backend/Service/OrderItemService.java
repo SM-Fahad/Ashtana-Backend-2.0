@@ -1,11 +1,14 @@
 package com.ashtana.backend.Service;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.OrderItemRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.OrderItemResponseDTO;
-import com.My.E_CommerceApp.Entity.Order;
-import com.My.E_CommerceApp.Entity.OrderItem;
-import com.My.E_CommerceApp.Entity.Product;
-import com.My.E_CommerceApp.Repository.*;
+
+import com.ashtana.backend.DTO.RequestDTO.OrderItemRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.OrderItemResponseDTO;
+import com.ashtana.backend.Entity.Order;
+import com.ashtana.backend.Entity.OrderItem;
+import com.ashtana.backend.Entity.Product;
+import com.ashtana.backend.Repository.OrderItemRepo;
+import com.ashtana.backend.Repository.OrderRepo;
+import com.ashtana.backend.Repository.ProductRepo;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,7 +54,7 @@ public class OrderItemService {
     public OrderItemResponseDTO saveOrderItem(OrderItemRequestDTO dto) {
 
         Order order = orderRepo.findById(dto.getOrder_id())
-                .orElseThrow(() -> new RuntimeException("❌ Order not found with ID: " + dto.getOrder_id()));
+                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + dto.getOrder_id()));
 
         OrderItem orderItem = toEntity(dto, order);
         orderItemRepo.save(orderItem);

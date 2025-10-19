@@ -1,12 +1,13 @@
 package com.ashtana.backend.Repository;
 
-import com.My.E_CommerceApp.Entity.Cart;
+
+import com.ashtana.backend.Entity.MyBag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CartRepo extends JpaRepository<Cart, Long> {
-    Optional<Cart> findByUserId(Long userId);
+public interface MyBagRepo extends JpaRepository<MyBag, Long> {
+    Optional<MyBag> findByUserId(Long userId);
 }

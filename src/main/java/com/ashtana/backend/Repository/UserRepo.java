@@ -1,7 +1,8 @@
 package com.ashtana.backend.Repository;
 
-import com.My.E_CommerceApp.Entity.User;
-import com.My.E_CommerceApp.Enum.Role;
+
+import com.ashtana.backend.Entity.User;
+import com.ashtana.backend.Enums.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

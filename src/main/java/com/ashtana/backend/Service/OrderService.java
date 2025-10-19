@@ -1,30 +1,32 @@
 package com.ashtana.backend.Service;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.OrderItemRequestDTO;
-import com.My.E_CommerceApp.DTO.RequestDTO.OrderRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.OrderItemResponseDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.OrderResponseDTO;
-import com.My.E_CommerceApp.Entity.Order;
-import com.My.E_CommerceApp.Entity.OrderItem;
-import com.My.E_CommerceApp.Entity.Product;
-import com.My.E_CommerceApp.Entity.User;
-import com.My.E_CommerceApp.Enum.OrderStatus;
-import com.My.E_CommerceApp.Repository.*;
+
+import com.ashtana.backend.DTO.RequestDTO.OrderItemRequestDTO;
+import com.ashtana.backend.DTO.RequestDTO.OrderRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.OrderItemResponseDTO;
+import com.ashtana.backend.DTO.ResponseDTO.OrderResponseDTO;
+import com.ashtana.backend.Entity.*;
+import com.ashtana.backend.Enums.OrderStatus;
+import com.ashtana.backend.Repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepo orderRepo;
 
-    public OrderService(OrderRepo orderRepo) {
-        this.orderRepo = orderRepo;
-    }
+    private final AddressRepo addressRepo;
+
+    private final MyBagItemsRepo myBagItemsRepo;
+
 
     @Autowired
     private UserRepo userRepo;
@@ -43,7 +45,7 @@ public class OrderService {
         order.setShippingAddress(dto.getShippingAddress());
         order.setStatus(OrderStatus.PENDING);
 
-        double totalAmount = 0.0;
+        Double totalAmount = 0.0;
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (OrderItemRequestDTO itemDTO : dto.getItems()) {
@@ -59,7 +61,7 @@ public class OrderService {
         }
 
         order.setTotalAmount(totalAmount);
-        order.setOrderItems(orderItems);
+//        order.setItems(orderItems);
 
         Order savedOrder = orderRepo.save(order);
         orderItemRepo.saveAll(orderItems);
@@ -76,19 +78,16 @@ public class OrderService {
         dto.setUserId(order.getUser().getId());
         dto.setTotalAmount(order.getTotalAmount());
         dto.setStatus(order.getStatus());
-        dto.setOrderDate(order.getOrderDate());
         dto.setShippingAddress(order.getShippingAddress());
 
-        List<OrderItemResponseDTO> itemDTOs = new ArrayList<>();
-        for (OrderItem item : order.getOrderItems()) {
+        List<OrderItemResponseDTO> itemDTOs = order.getOrderItems().stream().map(item -> {
             OrderItemResponseDTO i = new OrderItemResponseDTO();
             i.setProductId(item.getProduct().getId());
             i.setProductName(item.getProduct().getName());
             i.setQuantity(item.getQuantity());
-            i.setPricePerItem(item.getProduct().getPrice());
             i.setTotalPrice(item.getTotalPrice());
-            itemDTOs.add(i);
-        }
+            return i;
+        }).collect(Collectors.toList());
 
         dto.setItems(itemDTOs);
         return dto;
@@ -125,5 +124,57 @@ public class OrderService {
     // ✅ Delete
     public void delete(Long id) {
         orderRepo.deleteById(id);
+    }
+
+    @Transactional
+    public OrderResponseDTO checkout(Long userId, Long addressId) {
+        // 1️⃣ Fetch User
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // 2️⃣ Fetch Shipping Address
+        Address address = addressRepo.findById(addressId)
+                .orElseThrow(() -> new RuntimeException("Shipping address not found with id: " + addressId));
+
+        // 3️⃣ Fetch Cart Items
+        List<MyBagItems> myBagItemsItems = myBagItemsRepo.findByUserId(userId);
+        if (myBagItemsItems.isEmpty()) {
+            throw new RuntimeException("Cart is empty. Add products before checkout.");
+        }
+
+        // 4️⃣ Create new Order
+        Order order = new Order();
+        order.setUser(user);
+        order.setShippingAddress(address);
+        order.setStatus(OrderStatus.PENDING);
+
+        Double totalAmount = 0.0;
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        // 5️⃣ Convert CartItems → OrderItems
+        for (MyBagItems cartItem : myBagItemsItems) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setProduct(cartItem.getProduct());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setPrice(cartItem.getProduct().getPrice());
+            orderItem.setTotalPrice(cartItem.getProduct().getPrice()
+                    *(Double.valueOf(cartItem.getQuantity())));
+
+            totalAmount = totalAmount+(orderItem.getTotalPrice());
+            orderItems.add(orderItem);
+        }
+
+        order.setOrderItems(orderItems);
+        order.setTotalAmount(totalAmount);
+
+        // 6️⃣ Save Order (cascades OrderItems)
+        Order savedOrder = orderRepo.save(order);
+
+        // 7️⃣ Clear User's Cart
+        myBagItemsRepo.deleteAll(myBagItemsItems);
+
+        // 8️⃣ Return OrderResponseDTO
+        return this.toDto(savedOrder);
     }
 }

@@ -2,6 +2,8 @@ package com.ashtana.backend.DTO.RequestDTO;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProductRequestDTO {
 
@@ -9,9 +11,7 @@ public class ProductRequestDTO {
     private String description;
     private Double price;
     private Integer stock;
-    private String imageUrl;
+    private List<String> imageUrls;
     private Long categoryId;
-    private Double discount;
-    private String brand;
-    // private Long vendorId; // optional, admin only
+
 }

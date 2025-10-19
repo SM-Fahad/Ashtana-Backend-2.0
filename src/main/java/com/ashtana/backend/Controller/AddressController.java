@@ -1,8 +1,9 @@
 package com.ashtana.backend.Controller;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.AddressRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.AddressResponseDTO;
-import com.My.E_CommerceApp.Service.AddressService;
+
+import com.ashtana.backend.DTO.RequestDTO.AddressRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.AddressResponseDTO;
+import com.ashtana.backend.Service.AddressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

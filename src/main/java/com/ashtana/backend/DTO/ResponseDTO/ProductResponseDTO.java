@@ -1,7 +1,10 @@
 package com.ashtana.backend.DTO.ResponseDTO;
 
-import com.My.E_CommerceApp.Enum.ProductStatus;
+
+import com.ashtana.backend.Enums.ProductStatus;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ProductResponseDTO {
@@ -10,11 +13,7 @@ public class ProductResponseDTO {
     private String description;
     private Double price;
     private Integer stock;
-    private String imageUrl;
-    private Double discount;   // optional
-    private String brand;      // optional
+    private List<String> imageUrls;
     private String categoryName;
     private ProductStatus status;
-    private Long vendorId;
-    private String vendorName;
 }

@@ -1,8 +1,9 @@
 package com.ashtana.backend.Controller;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.ReviewRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.ReviewResponseDTO;
-import com.My.E_CommerceApp.Service.ReviewService;
+
+import com.ashtana.backend.DTO.RequestDTO.ReviewRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.ReviewResponseDTO;
+import com.ashtana.backend.Service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

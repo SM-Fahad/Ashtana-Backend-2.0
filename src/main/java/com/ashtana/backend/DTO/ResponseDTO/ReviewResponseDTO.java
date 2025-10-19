@@ -9,5 +9,4 @@ public class ReviewResponseDTO {
     private String productName;
     private String comment;
     private Integer rating;
-    private Boolean isActive;
 }

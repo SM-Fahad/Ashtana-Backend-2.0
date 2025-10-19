@@ -1,8 +1,10 @@
 package com.ashtana.backend.Controller;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.PaymentRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.PaymentResponseDTO;
-import com.My.E_CommerceApp.Service.PaymentService;
+
+import com.ashtana.backend.DTO.RequestDTO.PaymentRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.PaymentResponseDTO;
+import com.ashtana.backend.Enums.PaymentStatus;
+import com.ashtana.backend.Service.PaymentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,9 +43,9 @@ public class PaymentController {
     @PutMapping("/{id}/status")
     public ResponseEntity<PaymentResponseDTO> updatePaymentStatus(
             @PathVariable Long id,
-            @RequestParam String value
-    ) {
-        return ResponseEntity.ok(paymentService.updatePaymentStatus(id, value));
+            @RequestParam PaymentStatus status
+            ) {
+        return ResponseEntity.ok(paymentService.updatePaymentStatus(id, status));
     }
 
     // ✅ Delete payment

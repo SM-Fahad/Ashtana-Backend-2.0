@@ -1,11 +1,12 @@
 package com.ashtana.backend.Service;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.LoginRequestDTO;
-import com.My.E_CommerceApp.DTO.RequestDTO.UserRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.UserResponseDTO;
-import com.My.E_CommerceApp.Entity.User;
-import com.My.E_CommerceApp.Enum.Role;
-import com.My.E_CommerceApp.Repository.UserRepo;
+
+import com.ashtana.backend.DTO.RequestDTO.LoginRequestDTO;
+import com.ashtana.backend.DTO.RequestDTO.UserRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.UserResponseDTO;
+import com.ashtana.backend.Entity.User;
+import com.ashtana.backend.Enums.Role;
+import com.ashtana.backend.Repository.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-;
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,6 @@ public class UserService {
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
         dto.setRole(user.getRole());
-        dto.setIsActive(user.getIsActive());
         dto.setProfileImage(user.getProfileImage());
 //        dto.setGender(user.getGender());
 //        dto.setBio(user.getBio());
@@ -39,9 +39,6 @@ public class UserService {
 //        dto.setShopDescription(user.getShopDescription());
 //        dto.setShopLogo(user.getShopLogo());
 //        dto.setAverageRating(user.getAverageRating());
-        dto.setIsActive(user.getIsActive());
-        dto.setCreatedAt(user.getCreatedAt());
-        dto.setUpdatedAt(user.getUpdatedAt());
         return dto;
     }
 
@@ -52,7 +49,6 @@ public class UserService {
         user.setPhone(dto.getPhone());
         user.setPassword(dto.getPassword());
         user.setRole(Role.CUSTOMER); // ✅ Default role is CUSTOMER
-        user.setIsActive(true);
         return user;
     }
 
@@ -108,25 +104,32 @@ public class UserService {
     public String deactivateUser(Long id) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        user.setIsActive(false);
         userRepo.save(user);
         return "User deactivated successfully";
     }
 
     // -------------------- 🔹 Role Management -------------------- //
 
-    public UserResponseDTO promoteToVendor(Long id) {
-        User user = userRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        user.setRole(Role.VENDOR);
-        User saved = userRepo.save(user);
-        return toDto(saved);
-    }
+//    public UserResponseDTO promoteToVendor(Long id) {
+//        User user = userRepo.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+//        user.setRole(Role.VENDOR);
+//        User saved = userRepo.save(user);
+//        return toDto(saved);
+//    }
 
     public UserResponseDTO promoteToAdmin(Long id) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         user.setRole(Role.ADMIN);
+        User saved = userRepo.save(user);
+        return toDto(saved);
+    }
+
+    public UserResponseDTO promoteToMorderator(Long id) {
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        user.setRole(Role.MORDERATOR);
         User saved = userRepo.save(user);
         return toDto(saved);
     }

@@ -1,6 +1,6 @@
 package com.ashtana.backend.Repository;
 
-import com.My.E_CommerceApp.Entity.Category;
+import com.ashtana.backend.Entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

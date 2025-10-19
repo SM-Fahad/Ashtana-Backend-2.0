@@ -1,8 +1,11 @@
 package com.ashtana.backend.DTO.ResponseDTO;
 
-import com.My.E_CommerceApp.Enum.OrderStatus;
+
+import com.ashtana.backend.Entity.Address;
+import com.ashtana.backend.Enums.OrderStatus;
 import lombok.Data;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +18,7 @@ public class OrderResponseDTO {
     private Double totalAmount;
     private OrderStatus status;
     private LocalDateTime orderDate;
-    private String shippingAddress;
+    private Address shippingAddress;
 
     // Use separate OrderItemResponseDTO class, no nested class
     private List<OrderItemResponseDTO> items;

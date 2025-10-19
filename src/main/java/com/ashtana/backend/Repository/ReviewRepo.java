@@ -1,6 +1,7 @@
 package com.ashtana.backend.Repository;
 
-import com.My.E_CommerceApp.Entity.Review;
+
+import com.ashtana.backend.Entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

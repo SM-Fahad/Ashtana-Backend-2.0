@@ -1,5 +1,6 @@
 package com.ashtana.backend.DTO.RequestDTO;
 
+import com.ashtana.backend.Entity.Address;
 import lombok.Data;
 
 import java.util.List;
@@ -8,5 +9,5 @@ import java.util.List;
 public class OrderRequestDTO {
     private Long userId;
     private List<OrderItemRequestDTO> items; // productId + quantity
-    private String shippingAddress;
+    private Address shippingAddress;
 }

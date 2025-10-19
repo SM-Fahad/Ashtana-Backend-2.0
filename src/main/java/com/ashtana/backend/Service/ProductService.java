@@ -1,14 +1,15 @@
 package com.ashtana.backend.Service;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.ProductRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.ProductResponseDTO;
-import com.My.E_CommerceApp.Entity.Category;
-import com.My.E_CommerceApp.Entity.Product;
-import com.My.E_CommerceApp.Entity.User;
-import com.My.E_CommerceApp.Enum.ProductStatus;
-import com.My.E_CommerceApp.Repository.CategoryRepo;
-import com.My.E_CommerceApp.Repository.ProductRepo;
-import com.My.E_CommerceApp.Repository.UserRepo;
+
+import com.ashtana.backend.DTO.RequestDTO.ProductRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.ProductResponseDTO;
+import com.ashtana.backend.Entity.Category;
+import com.ashtana.backend.Entity.Product;
+import com.ashtana.backend.Entity.User;
+import com.ashtana.backend.Enums.ProductStatus;
+import com.ashtana.backend.Repository.CategoryRepo;
+import com.ashtana.backend.Repository.ProductRepo;
+import com.ashtana.backend.Repository.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,18 +25,15 @@ public class ProductService {
     private final UserRepo userRepo;
 
     // -------------------- Mapper -------------------- //
-    public Product toEntity(ProductRequestDTO dto, Category category, User vendor) {
+    public Product toEntity(ProductRequestDTO dto, Category category) {
         Product product = new Product();
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
-        product.setStock(dto.getStock());
-        product.setImageUrl(dto.getImageUrl());
+        product.setStockQuantity(dto.getStock());
+        product.setImageUrls(dto.getImageUrls());
         product.setCategory(category);
-        product.setVendor(vendor);
-        product.setDiscount(dto.getDiscount() != null ? dto.getDiscount() : 0.0);
-        product.setBrand(dto.getBrand());
-        product.setStatus(ProductStatus.PENDING); // default when created
+        product.setStatus(ProductStatus.PENDING);
         return product;
     }
 
@@ -45,26 +43,19 @@ public class ProductService {
         dto.setName(product.getName());
         dto.setDescription(product.getDescription());
         dto.setPrice(product.getPrice());
-        dto.setStock(product.getStock());
-        dto.setImageUrl(product.getImageUrl());
-        dto.setDiscount(product.getDiscount());
-        dto.setBrand(product.getBrand());
+        dto.setStock(product.getStockQuantity());
+        dto.setImageUrls(product.getImageUrls());
         dto.setCategoryName(product.getCategory() != null ? product.getCategory().getName() : null);
         dto.setStatus(product.getStatus());
-        dto.setVendorId(product.getVendor() != null ? product.getVendor().getId() : null);
-        dto.setVendorName(product.getVendor() != null ? product.getVendor().getFullName() : null);
         return dto;
     }
 
     // -------------------- Create Product -------------------- //
-    public ProductResponseDTO createProduct(ProductRequestDTO dto, Long vendorId) {
+    public ProductResponseDTO createProduct(ProductRequestDTO dto) {
         Category category = categoryRepo.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
-        User vendor = userRepo.findById(vendorId)
-                .orElseThrow(() -> new EntityNotFoundException("Vendor not found"));
-
-        Product product = toEntity(dto, category, vendor);
+        Product product = toEntity(dto, category);
         Product saved = productRepo.save(product);
         return toDto(saved);
     }
@@ -87,45 +78,33 @@ public class ProductService {
         Product existing = productRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + id));
 
-        // Only the vendor who owns this product can update it, or admin (you can check role later)
-        if (!existing.getVendor().getId().equals(vendorId)) {
-            throw new RuntimeException("You are not allowed to update this product");
-        }
-
         Category category = categoryRepo.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
 
         existing.setName(dto.getName());
         existing.setDescription(dto.getDescription());
         existing.setPrice(dto.getPrice());
-        existing.setStock(dto.getStock());
-        existing.setImageUrl(dto.getImageUrl());
+        existing.setStockQuantity(dto.getStock());
+        existing.setImageUrls(dto.getImageUrls());
         existing.setCategory(category);
-        existing.setDiscount(dto.getDiscount() != null ? dto.getDiscount() : existing.getDiscount());
-        existing.setBrand(dto.getBrand() != null ? dto.getBrand() : existing.getBrand());
 
         Product updated = productRepo.save(existing);
         return toDto(updated);
     }
 
     // -------------------- Delete Product -------------------- //
-    public void deleteProduct(Long id, Long vendorId) {
+    public void deleteProduct(Long id) {
         Product product = productRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + id));
-
-        // Only vendor or admin can delete
-        if (!product.getVendor().getId().equals(vendorId)) {
-            throw new RuntimeException("You are not allowed to delete this product");
-        }
 
         productRepo.delete(product);
     }
 
     // -------------------- Get Products By Vendor -------------------- //
-    public List<ProductResponseDTO> getProductsByVendor(Long vendorId) {
-        return productRepo.findAll().stream()
-                .filter(p -> p.getVendor() != null && p.getVendor().getId().equals(vendorId))
-                .map(this::toDto)
-                .collect(Collectors.toList());
-    }
+//    public List<ProductResponseDTO> getProductsByVendor(Long vendorId) {
+//        return productRepo.findAll().stream()
+//                .filter(p -> p.getVendor() != null && p.getVendor().getId().equals(vendorId))
+//                .map(this::toDto)
+//                .collect(Collectors.toList());
+//    }
 }

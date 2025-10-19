@@ -26,6 +26,10 @@ public class MyBagItems {
     @JoinColumn(name = "my_bag_id", nullable = false)
     private MyBag myBag;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(name = "price_per_item", nullable = false)
     private Double pricePerItem;
 

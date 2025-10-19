@@ -1,9 +1,10 @@
 package com.ashtana.backend.Service;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.CategoryRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.CategoryResponseDTO;
-import com.My.E_CommerceApp.Entity.Category;
-import com.My.E_CommerceApp.Repository.CategoryRepo;
+
+import com.ashtana.backend.DTO.RequestDTO.CategoryRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.CategoryResponseDTO;
+import com.ashtana.backend.Entity.Category;
+import com.ashtana.backend.Repository.CategoryRepo;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

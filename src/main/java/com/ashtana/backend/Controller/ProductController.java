@@ -1,9 +1,10 @@
 package com.ashtana.backend.Controller;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.ProductRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.ProductResponseDTO;
-import com.My.E_CommerceApp.Enum.ProductStatus;
-import com.My.E_CommerceApp.Service.ProductService;
+
+import com.ashtana.backend.DTO.RequestDTO.ProductRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.ProductResponseDTO;
+import com.ashtana.backend.Enums.ProductStatus;
+import com.ashtana.backend.Service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> createProduct(
             @RequestBody ProductRequestDTO dto,
             @RequestParam Long vendorId) { // Vendor creating the product
-        ProductResponseDTO response = productService.createProduct(dto, vendorId);
+        ProductResponseDTO response = productService.createProduct(dto);
         return ResponseEntity.ok(response);
     }
 
@@ -41,11 +42,11 @@ public class ProductController {
     }
 
     // -------------------- Get Products By Vendor -------------------- //
-    @GetMapping("/vendor/{vendorId}")
-    public ResponseEntity<List<ProductResponseDTO>> getProductsByVendor(@PathVariable Long vendorId) {
-        List<ProductResponseDTO> response = productService.getProductsByVendor(vendorId);
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/vendor/{vendorId}")
+//    public ResponseEntity<List<ProductResponseDTO>> getProductsByVendor(@PathVariable Long vendorId) {
+//        List<ProductResponseDTO> response = productService.getProductsByVendor(vendorId);
+//        return ResponseEntity.ok(response);
+//    }
 
     // -------------------- Update Product -------------------- //
     @PutMapping("/{id}")
@@ -62,7 +63,7 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(
             @PathVariable Long id,
             @RequestParam Long vendorId) {
-        productService.deleteProduct(id, vendorId);
+        productService.deleteProduct(id);
         return ResponseEntity.ok("Product deleted successfully");
     }
 

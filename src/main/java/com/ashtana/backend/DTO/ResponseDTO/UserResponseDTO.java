@@ -1,7 +1,8 @@
 package com.ashtana.backend.DTO.ResponseDTO;
 
-import com.My.E_CommerceApp.Enum.AccountStatus;
-import com.My.E_CommerceApp.Enum.Role;
+
+import com.ashtana.backend.Enums.AccountStatus;
+import com.ashtana.backend.Enums.Role;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,20 +20,6 @@ public class UserResponseDTO {
     private AccountStatus accountStatus;
 
     private String profileImage;
-//    private String bio;
-//    private String gender;
-
-    // Vendor info (optional)
-//    private String shopName;
-//    private String shopDescription;
-//    private String shopLogo;
-//    private Double averageRating;
-
-    // Audit info
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String createdBy;
-//    private String updatedBy;
 
     private List<AddressResponseDTO> addresses;
 }

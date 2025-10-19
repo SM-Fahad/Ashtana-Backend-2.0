@@ -1,8 +1,9 @@
 package com.ashtana.backend.Controller;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.CategoryRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.CategoryResponseDTO;
-import com.My.E_CommerceApp.Service.CategoryService;
+
+import com.ashtana.backend.DTO.RequestDTO.CategoryRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.CategoryResponseDTO;
+import com.ashtana.backend.Service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

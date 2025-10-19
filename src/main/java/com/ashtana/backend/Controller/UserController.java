@@ -1,9 +1,10 @@
 package com.ashtana.backend.Controller;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.LoginRequestDTO;
-import com.My.E_CommerceApp.DTO.RequestDTO.UserRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.UserResponseDTO;
-import com.My.E_CommerceApp.Service.UserService;
+
+import com.ashtana.backend.DTO.RequestDTO.LoginRequestDTO;
+import com.ashtana.backend.DTO.RequestDTO.UserRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.UserResponseDTO;
+import com.ashtana.backend.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -60,10 +61,10 @@ public class UserController {
 
     // -------------------- 🔹 Promote User -------------------- //
     // Promote to Vendor
-    @PatchMapping("/{id}/promote/vendor")
-    public ResponseEntity<UserResponseDTO> promoteToVendor(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.promoteToVendor(id));
-    }
+//    @PatchMapping("/{id}/promote/vendor")
+//    public ResponseEntity<UserResponseDTO> promoteToVendor(@PathVariable Long id) {
+//        return ResponseEntity.ok(userService.promoteToVendor(id));
+//    }
 
     // Promote to Admin
     @PatchMapping("/{id}/promote/admin")

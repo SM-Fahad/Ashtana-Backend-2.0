@@ -1,13 +1,14 @@
 package com.ashtana.backend.Service;
 
-import com.My.E_CommerceApp.DTO.RequestDTO.ReviewRequestDTO;
-import com.My.E_CommerceApp.DTO.ResponseDTO.ReviewResponseDTO;
-import com.My.E_CommerceApp.Entity.Product;
-import com.My.E_CommerceApp.Entity.Review;
-import com.My.E_CommerceApp.Entity.User;
-import com.My.E_CommerceApp.Repository.ProductRepo;
-import com.My.E_CommerceApp.Repository.ReviewRepo;
-import com.My.E_CommerceApp.Repository.UserRepo;
+
+import com.ashtana.backend.DTO.RequestDTO.ReviewRequestDTO;
+import com.ashtana.backend.DTO.ResponseDTO.ReviewResponseDTO;
+import com.ashtana.backend.Entity.Product;
+import com.ashtana.backend.Entity.Review;
+import com.ashtana.backend.Entity.User;
+import com.ashtana.backend.Repository.ProductRepo;
+import com.ashtana.backend.Repository.ReviewRepo;
+import com.ashtana.backend.Repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,6 @@ public class ReviewService {
         review.setProduct(product);
         review.setComment(dto.getComment());
         review.setRating(dto.getRating());
-        review.setIsActive(true);
 
         Review saved = reviewRepo.save(review);
         return convertToResponse(saved);
@@ -77,7 +77,6 @@ public class ReviewService {
         dto.setRating(review.getRating());
         dto.setUserName(review.getUser().getFullName());
         dto.setProductName(review.getProduct().getName());
-        dto.setIsActive(review.getIsActive());
         return dto;
     }
 }
