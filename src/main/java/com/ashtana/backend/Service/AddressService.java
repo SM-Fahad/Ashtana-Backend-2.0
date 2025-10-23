@@ -21,6 +21,8 @@ public class AddressService {
 
     private Address toEntity(AddressRequestDTO dto) {
         Address address = new Address();
+        address.getUser().setId(dto.getUserId());
+        address.setRecipientName(dto.getRecipientName());
         address.setStreet(dto.getStreet());
         address.setCity(dto.getCity());
         address.setCountry(dto.getCountry());

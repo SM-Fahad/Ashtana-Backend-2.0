@@ -1,6 +1,5 @@
 package com.ashtana.backend.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,19 +13,17 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "categories")
-public class Category {
+@Table(name = "size")
+public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String SizeName;
 
-    @Column(length = 500)
-    private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JsonIgnoreProperties("category")
+    @OneToMany(mappedBy = "size", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JsonIgnoreProperties("size")
     private List<Product> products = new ArrayList<>();
 }

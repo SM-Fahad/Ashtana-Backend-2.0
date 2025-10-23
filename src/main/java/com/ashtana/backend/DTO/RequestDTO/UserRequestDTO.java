@@ -32,7 +32,7 @@ public class UserRequestDTO {
     private AccountStatus accountStatus;
 
     // Optional during registration (user may leave blank)
-    private List<AddressRequestDTO> addresses;
+//    private List<AddressRequestDTO> addresses;
 
 //    private Boolean isActive;
 //

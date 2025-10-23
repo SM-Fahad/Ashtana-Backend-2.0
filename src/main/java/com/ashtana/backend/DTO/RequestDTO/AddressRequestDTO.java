@@ -4,7 +4,9 @@ import lombok.Data;
 
 @Data
 public class AddressRequestDTO {
-
+    private Long UserId;
+    private String Address;
+    private String recipientName;
     private String street;
     private String city;
     private String country;

@@ -22,8 +22,7 @@ public class ProductController {
     // -------------------- Create Product -------------------- //
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(
-            @RequestBody ProductRequestDTO dto,
-            @RequestParam Long vendorId) { // Vendor creating the product
+            @RequestBody ProductRequestDTO dto) {
         ProductResponseDTO response = productService.createProduct(dto);
         return ResponseEntity.ok(response);
     }

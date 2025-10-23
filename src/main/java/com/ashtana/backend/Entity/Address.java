@@ -26,7 +26,7 @@ public class Address {
     private String postalCode;
     private String type; // "SHIPPING" or "BILLING"
 
-    @Column(nullable = false)
+    @Column
     private String phone;
 
     @ManyToOne (fetch = FetchType.LAZY)

@@ -43,6 +43,20 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    // NEW: Optional sub-category
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sub_category_id")
+    private SubCategory subCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "color_id")
+    private Color color;
+
+    @ManyToOne
+    @JoinColumn(name = "size_id")
+    private Size size;
+
+
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -50,7 +64,5 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
-//    @Enumerated(EnumType.STRING) // saves "MEN", "WOMEN", etc.
-//    private Category category;
 
 }
