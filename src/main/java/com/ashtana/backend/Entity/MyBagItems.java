@@ -30,18 +30,11 @@ public class MyBagItems {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "price_per_item", nullable = false)
-    private Double pricePerItem;
 
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
 
-    // ✅ Automatically calculate total price
-    public void calculateTotal() {
-        if (pricePerItem != null && quantity != null) {
-            this.totalPrice = pricePerItem * quantity;
-        }
-    }
+
 }
 
 

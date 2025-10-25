@@ -1,5 +1,6 @@
 package com.ashtana.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,6 @@ public class Color {
 
     @OneToMany(mappedBy = "color", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JsonIgnoreProperties("color")
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 }

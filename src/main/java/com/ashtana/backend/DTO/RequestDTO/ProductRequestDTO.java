@@ -11,6 +11,10 @@ public class ProductRequestDTO {
     private String description;
     private Double price;
     private Integer stock;
+    private Long subCategoryId;
+    private Long colorId;
+    private Long sizeId;
+    private Long userId;
     private List<String> imageUrls;
     private Long categoryId;
 

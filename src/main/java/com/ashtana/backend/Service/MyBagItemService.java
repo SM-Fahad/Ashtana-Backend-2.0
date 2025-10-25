@@ -51,7 +51,6 @@ public class MyBagItemService {
         MyBagItemResponseDTO dto = new MyBagItemResponseDTO();
         dto.setId(item.getId());
         dto.setProductName(item.getProduct().getName());
-        dto.setPricePerItem(item.getProduct().getPrice());
         dto.setQuantity(item.getQuantity());
         dto.setTotalPrice(item.getTotalPrice());
         return dto;

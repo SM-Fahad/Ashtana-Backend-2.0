@@ -1,5 +1,6 @@
 package com.ashtana.backend.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Size {
 
 
     @OneToMany(mappedBy = "size", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JsonIgnoreProperties("size")
+    @JsonIgnoreProperties("products")
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 }

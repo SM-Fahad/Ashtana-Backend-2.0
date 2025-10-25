@@ -15,5 +15,8 @@ public class ProductResponseDTO {
     private Integer stock;
     private List<String> imageUrls;
     private String categoryName;
+    private String subCategoryName;
+    private String colorName;
+    private String sizeName;
     private ProductStatus status;
 }

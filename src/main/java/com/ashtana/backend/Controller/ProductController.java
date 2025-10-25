@@ -1,81 +1,99 @@
 package com.ashtana.backend.Controller;
 
-
 import com.ashtana.backend.DTO.RequestDTO.ProductRequestDTO;
 import com.ashtana.backend.DTO.ResponseDTO.ProductResponseDTO;
-import com.ashtana.backend.Enums.ProductStatus;
 import com.ashtana.backend.Service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    // -------------------- Create Product -------------------- //
-    @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(
-            @RequestBody ProductRequestDTO dto) {
-        ProductResponseDTO response = productService.createProduct(dto);
-        return ResponseEntity.ok(response);
+    // ✅ CREATE PRODUCT (single file upload)
+    @PostMapping("/single")
+    public ResponseEntity<ProductResponseDTO> createProductSingle(
+            @Valid @RequestPart("product") ProductRequestDTO productRequest,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+
+        ProductResponseDTO response = productService.createProduct(productRequest, imageFile);
+        return ResponseEntity.status(201).body(response);
     }
 
-    // -------------------- Get Product -------------------- //
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
-        ProductResponseDTO response = productService.getProductById(id);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-        List<ProductResponseDTO> response = productService.getAllProducts();
-        return ResponseEntity.ok(response);
-    }
-
-    // -------------------- Get Products By Vendor -------------------- //
-//    @GetMapping("/vendor/{vendorId}")
-//    public ResponseEntity<List<ProductResponseDTO>> getProductsByVendor(@PathVariable Long vendorId) {
-//        List<ProductResponseDTO> response = productService.getProductsByVendor(vendorId);
-//        return ResponseEntity.ok(response);
+    // ✅ CREATE PRODUCT (multiple file upload)
+//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<ProductResponseDTO> createProductMultiple(
+//            @Valid @RequestPart("product") ProductRequestDTO productRequest,
+//            @RequestPart(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
+//
+//        ProductResponseDTO response = productService.createProduct(productRequest, imageFiles);
+//        return ResponseEntity.status(201).body(response);
 //    }
 
-    // -------------------- Update Product -------------------- //
+//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<ProductResponseDTO> createProductMultiple(
+//            @RequestPart("product") ProductResponseDTO productRequest,
+//            @RequestPart(value = "images", required = false) MultipartFile[] imageFiles) {
+//
+//        ProductResponseDTO savedProduct = productService.createProduct(productRequest, imageFiles);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+//    }
+
+    @PostMapping(value = "/multiple", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductResponseDTO> createProductJson(@RequestBody ProductRequestDTO productRequest) {
+        ProductResponseDTO response = productService.createProduct(productRequest, (MultipartFile) null);
+        return ResponseEntity.status(201).body(response);
+    }
+
+    @PostMapping(value = "/upload-images/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductResponseDTO> uploadImages(
+            @PathVariable Long productId,
+            @RequestPart("imageFiles") MultipartFile[] imageFiles) {
+
+        ProductResponseDTO response = productService.addImages(productId, imageFiles);
+        return ResponseEntity.ok(response);
+    }
+
+
+    // ✅ GET ALL PRODUCTS
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
+        List<ProductResponseDTO> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+    }
+
+    // ✅ GET PRODUCT BY ID
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
+        ProductResponseDTO product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
+    }
+
+    // ✅ UPDATE PRODUCT (with multiple file upload)
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Long id,
-            @RequestParam Long vendorId,
-            @RequestBody ProductRequestDTO dto) {
-        ProductResponseDTO response = productService.updateProduct(id, dto, vendorId);
-        return ResponseEntity.ok(response);
+            @Valid @RequestPart("product") ProductRequestDTO productRequest,
+            @RequestPart(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
+
+        ProductResponseDTO updated = productService.updateProduct(id, productRequest, imageFiles);
+        return ResponseEntity.ok(updated);
     }
 
-    // -------------------- Delete Product -------------------- //
+    // ✅ DELETE PRODUCT
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(
-            @PathVariable Long id,
-            @RequestParam Long vendorId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return ResponseEntity.ok("Product deleted successfully");
-    }
-
-    // -------------------- Admin Only: Change Status -------------------- //
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<ProductResponseDTO> changeStatus(
-            @PathVariable Long id,
-            @RequestParam ProductStatus status) {
-        // Optionally, call a service method to change status only if admin
-        ProductResponseDTO product = productService.getProductById(id);
-        // You can implement admin check in service layer
-        // product.setStatus(status);
-        // return ResponseEntity.ok(productService.save(product));
-        return ResponseEntity.ok(product);
+        return ResponseEntity.noContent().build();
     }
 }

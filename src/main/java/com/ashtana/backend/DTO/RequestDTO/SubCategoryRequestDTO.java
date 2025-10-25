@@ -15,6 +15,8 @@ public class SubCategoryRequestDTO {
     @Size(max = 500, message = "Description must not exceed 500 characters")
     private String description;
 
+    private String subCategoryImg;
+
     @NotNull(message = "Category ID is required")
     private Long categoryId;
 }

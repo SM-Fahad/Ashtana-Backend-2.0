@@ -26,6 +26,9 @@ public class SubCategory {
     @Column(length = 500)
     private String description;
 
+    @Column
+    private String subCategoryImg;
+
     // Each sub-category belongs to one main category
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
