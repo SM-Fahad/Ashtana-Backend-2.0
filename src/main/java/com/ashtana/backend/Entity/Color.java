@@ -3,17 +3,18 @@ package com.ashtana.backend.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "color")
 public class Color {
     @Id
@@ -21,13 +22,30 @@ public class Color {
     private Long id;
 
     @Column(nullable = false)
-    private String ColorName;
+    private String colorName;
 
     @Column(nullable = false)
-    private String ColorCode;
+    private String colorCode;
 
-    @OneToMany(mappedBy = "color", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JsonIgnoreProperties("color")
+    private String description;
+
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
+    // Many-to-Many relationship with Product
+    @ManyToMany(mappedBy = "availableColors")
     @JsonIgnore
-    private List<Product> products = new ArrayList<>();
+    private Set<Product> products = new HashSet<>();
+
+    // Helper method for adding product
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.getAvailableColors().add(this);
+    }
+
+    // Helper method for removing product
+    public void removeProduct(Product product) {
+        this.products.remove(product);
+        product.getAvailableColors().remove(this);
+    }
 }
